@@ -63,6 +63,7 @@ def parseDatetime(tokens):
 
 TIMESTAMP = quote + POSITIVE_NUMBER + quote
 TIMESTAMP.setParseAction(parseTimestamp)
+
 TIMEZONE = int_ + Keyword('inUtc') + equals + UINT_VALUE
 
 COMPOSED_DATE = (
