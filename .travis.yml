@@ -2,4 +2,4 @@ language: python
 python:
     - "2.7"
 install: pip install -r requirements/tests.txt
-script: nosetests
+script: nosetests --config nose.cfg
