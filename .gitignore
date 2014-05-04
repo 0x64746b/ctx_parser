@@ -1,2 +1,4 @@
 *.pyc
 .coverage
+.tox
+ctx_parser.egg-info
