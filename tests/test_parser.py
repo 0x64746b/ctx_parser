@@ -56,6 +56,7 @@ class TestTheParser(unittest.TestCase):
         )
 
     def test_can_parse_composed_elements_containing_lists(self):
+        # setup test data
         test_string_1 = 'test_string_1'
         test_string_2 = 'test_string_2'
         test_string_3 = 'test_string_3'
@@ -112,5 +113,47 @@ class TestTheParser(unittest.TestCase):
         )
         self.assertIsInstance(
             parsed_element.testElement.subElementList[0].differentValue,
+            string_types
+        )
+
+    def test_can_parse_composed_elements_containing_composed_elements(self):
+        # setup test data
+        test_string_1 = 'test_string_1'
+        test_string_2 = 'test_string_2'
+
+        test_element = """
+          testElement {
+            subElement {
+              char subValue="%(first_value)s"
+            }
+
+            anotherElement {
+              char anotherValue="%(second_value)s"
+            }
+          } #testElement
+        """ % {
+            'first_value': test_string_1,
+            'second_value': test_string_2,
+        }
+
+        # test parsing of nested composed elements
+        parsed_element = parser.COMPOSED_ELEMENT.parseString(test_element)
+
+        # check result
+        self.assertEqual(
+            parsed_element.testElement.subElement.subValue,
+            test_string_1
+        )
+        self.assertIsInstance(
+            parsed_element.testElement.subElement.subValue,
+            string_types
+        )
+
+        self.assertEqual(
+            parsed_element.testElement.anotherElement.anotherValue,
+            test_string_2
+        )
+        self.assertIsInstance(
+            parsed_element.testElement.anotherElement.anotherValue,
             string_types
         )
