@@ -58,6 +58,7 @@ class TestTheParser(unittest.TestCase):
     def test_can_parse_composed_elements_containing_lists(self):
         test_string_1 = 'test_string_1'
         test_string_2 = 'test_string_2'
+        test_string_3 = 'test_string_3'
 
         test_element = """
           testElement {
@@ -70,10 +71,17 @@ class TestTheParser(unittest.TestCase):
                 char anotherValue="%(second_value)s"
               }
             } #subElementList
+
+            anotherElementList {
+              anotherElement {
+                char differentValue="%(third_value)s"
+              }
+            } #anotherList
           } #testElement
         """ % {
             'first_value': test_string_1,
             'second_value': test_string_2,
+            'third_value': test_string_3,
         }
 
         # test parsing of composed element containing a list
@@ -95,5 +103,14 @@ class TestTheParser(unittest.TestCase):
         )
         self.assertIsInstance(
             parsed_element.testElement.subElementList[1].anotherValue,
+            string_types
+        )
+
+        self.assertEqual(
+            parsed_element.testElement.anotherElementList[0].differentValue,
+            test_string_3
+        )
+        self.assertIsInstance(
+            parsed_element.testElement.subElementList[0].differentValue,
             string_types
         )
