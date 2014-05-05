@@ -221,3 +221,25 @@ class TestTheParser(unittest.TestCase):
         # check result
         self.assertEqual(parsed_element.testElement.testDate, test_date_1)
         self.assertEqual(parsed_element.testElement.anotherDate, test_date_2)
+
+    def test_can_parse_composed_elements_containing_simple_elements(self):
+        # setup test data
+        test_value_1 = 'test_string_1'
+        test_value_2 = 'test_string_2'
+
+        test_element = """
+          testElement {
+            char aValue="%(first_value)s"
+            char anotherValue="%(second_value)s"
+          } #testElement
+        """ % {
+            'first_value': test_value_1,
+            'second_value': test_value_2,
+        }
+
+        # test parsing of simple values in composed elements
+        parsed_element = parser.COMPOSED_ELEMENT.parseString(test_element)
+
+        # check result
+        self.assertEqual(parsed_element.testElement.aValue, test_value_1)
+        self.assertEqual(parsed_element.testElement.anotherValue, test_value_2)
