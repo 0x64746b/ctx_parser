@@ -243,3 +243,39 @@ class TestTheParser(unittest.TestCase):
         # check result
         self.assertEqual(parsed_element.testElement.aValue, test_value_1)
         self.assertEqual(parsed_element.testElement.anotherValue, test_value_2)
+
+    def test_can_parse_simple_elements_containing_strings(self):
+        # setup test data
+        test_value = 'test_value'
+        test_element = 'char testString="{}"'.format(test_value)
+
+        # test parsing of simple string value
+        parsed_element = parser.SIMPLE_ELEMENT.parseString(test_element)
+
+        # check result
+        self.assertEqual(parsed_element.testString, test_value)
+
+    def test_can_parse_simple_elements_containing_integers(self):
+        # setup test data
+        test_value = 2342
+        test_element = 'int testInteger="{}"'.format(test_value)
+
+        # test parsing of simple integer value
+        parsed_element = parser.SIMPLE_ELEMENT.parseString(test_element)
+
+        # check result
+        self.assertEqual(parsed_element.testInteger, test_value)
+
+    def test_can_parse_simple_elements_containing_timestamps(self):
+        # setup test data
+        test_timestamp = 1399585500
+        test_element = 'int time="{}"'.format(test_timestamp)
+
+        # test parsing of timestamp
+        parsed_element = parser.SIMPLE_ELEMENT.parseString(test_element)
+
+        # check result
+        self.assertEqual(
+            parsed_element.time,
+            datetime.fromtimestamp(test_timestamp)
+        )
