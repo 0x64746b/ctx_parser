@@ -279,3 +279,27 @@ class TestTheParser(unittest.TestCase):
             parsed_element.time,
             datetime.fromtimestamp(test_timestamp)
         )
+
+    def test_can_parse_simple_elements_containing_divisions(self):
+        # setup test data
+        dividend = 2342
+        divisor = 100
+        test_element = 'char testDivision="{}%2F{}"'.format(dividend, divisor)
+
+        # test parsing of division
+        parsed_element = parser.SIMPLE_ELEMENT.parseString(test_element)
+
+        # check result
+        self.assertEqual(parsed_element.testDivision, dividend / divisor)
+
+    def test_can_parse_divisions(self):
+        # setup test data
+        dividend = 4223
+        divisor = 22
+        test_division = '"{}%2F{}"'.format(dividend, divisor)
+
+        # test parsing of division value
+        parsed_value = parser.DIVISION.parseString(test_division)
+
+        # check result
+        self.assertEqual(parsed_value[0], dividend / divisor)
