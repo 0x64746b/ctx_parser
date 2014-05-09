@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/0x64746b/ctx_parser.svg?branch=master)](https://travis-ci.org/0x64746b/ctx_parser)
+[![Coverage Status](https://img.shields.io/coveralls/0x64746b/ctx_parser.svg)](https://coveralls.io/r/0x64746b/ctx_parser)
 
 About
 =====
