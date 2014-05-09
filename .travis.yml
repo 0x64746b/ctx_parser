@@ -4,3 +4,5 @@ python:
     - "3.3"
 install: pip install -r requirements/tests.txt
 script: nosetests --config nose.cfg
+after_success:
+    - coveralls
