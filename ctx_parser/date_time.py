@@ -46,6 +46,11 @@ def parseTimestamp(tokens):
     return datetime.datetime.fromtimestamp(int(timestamp))
 
 
+def parseFlag(tokens):
+    value = int(tokens[1])
+    tokens[1] = bool(value)
+
+
 def parseDate(tokens):
     args = tokens.asList()
     args.reverse()
@@ -63,7 +68,14 @@ def parseDatetime(tokens):
 
 TIMESTAMP = quote + POSITIVE_NUMBER + quote
 TIMESTAMP.setParseAction(parseTimestamp)
-TIMEZONE = int_ + Keyword('inUtc') + equals + UINT_VALUE
+
+UTC_FLAG = Dict(
+    Group(
+        (
+            int_ + Keyword('inUtc') + equals + UINT_VALUE
+        ).setParseAction(parseFlag)
+    )
+)
 
 COMPOSED_DATE = (
     date.suppress() + lcurly +
@@ -88,7 +100,7 @@ DATETIME = Dict(
         (
             NAME + lcurly +
             COMPOSED_DATE +
-            TIMEZONE.suppress() +
+            UTC_FLAG.suppress() +
             COMPOSED_TIME +
             rcurly + Optional(COMMENT)
         ).setParseAction(parseDatetime)
