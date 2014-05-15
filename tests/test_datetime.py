@@ -5,7 +5,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from datetime import datetime
+from datetime import date, datetime
 import unittest
 
 from ctx_parser import date_time
@@ -49,3 +49,24 @@ class TestTheDateTimeModule(unittest.TestCase):
 
         # check result
         self.assertEqual(parsed_elements.inUtc, False)
+
+    def test_can_parse_composed_dates(self):
+        # setup test data
+        test_date = date(2014, 5, 15)
+        test_element = """
+          date {
+            int day="%(day)s"
+            int month="%(month)s"
+            int year="%(year)s"
+          } #date
+        """ % {
+            'day': test_date.day,
+            'month': test_date.month,
+            'year': test_date.year,
+        }
+
+        # test parsing of composed date
+        parsed_element = date_time.COMPOSED_DATE.parseString(test_element)
+
+        # check result
+        self.assertEqual(parsed_element[0], test_date)
