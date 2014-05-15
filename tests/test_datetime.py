@@ -91,3 +91,37 @@ class TestTheDateTimeModule(unittest.TestCase):
 
         # check result
         self.assertEqual(parsed_element[0], test_time)
+
+    def test_can_parse_datetimes(self):
+        # setup test data
+        test_date = datetime(2014, 5, 15, 22, 20, 35)
+        test_element = """
+          testDate {
+            date {
+              int day="%(day)s"
+              int month="%(month)s"
+              int year="%(year)s"
+            } #date
+
+            int inUtc="1"
+
+            time {
+              int hour="%(hour)s"
+              int min="%(min)s"
+              int sec="%(sec)s"
+            } #time
+          } #testDate
+        """ % {
+            'day': test_date.day,
+            'month': test_date.month,
+            'year': test_date.year,
+            'hour': test_date.hour,
+            'min': test_date.minute,
+            'sec': test_date.second,
+        }
+
+        # test parsing of date times
+        parsed_element = date_time.DATETIME.parseString(test_element)
+
+        # check result
+        self.assertEqual(parsed_element.testDate, test_date)
