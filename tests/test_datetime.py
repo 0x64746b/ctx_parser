@@ -5,7 +5,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from datetime import date, datetime
+from datetime import date, datetime, time
 import unittest
 
 from ctx_parser import date_time
@@ -70,3 +70,24 @@ class TestTheDateTimeModule(unittest.TestCase):
 
         # check result
         self.assertEqual(parsed_element[0], test_date)
+
+    def test_can_parse_composed_times(self):
+        # setup test data
+        test_time = time(21, 50, 15)
+        test_element = """
+          time {
+            int hour="%(hour)s"
+            int min="%(min)s"
+            int sec="%(sec)s"
+          }
+        """ % {
+            'hour': test_time.hour,
+            'min': test_time.minute,
+            'sec': test_time.second,
+        }
+
+        # test parsing of composed time
+        parsed_element = date_time.COMPOSED_TIME.parseString(test_element)
+
+        # check result
+        self.assertEqual(parsed_element[0], test_time)
